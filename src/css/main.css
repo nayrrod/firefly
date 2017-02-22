@@ -16,6 +16,21 @@ body {
 
 h1, h2, h3, h4, p {
   font-family: 'Josefin Slab', serif;
+  font-weight: var(--main-font-weight);
+}
+
+#loading-overlay {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  color: var(--contrast-color);
+  background-color: var(--main-color);
+  z-index: 500;
 }
 
 #threejs-canvas {
@@ -39,11 +54,9 @@ h1, h2, h3, h4, p {
 
 .content-section {
   font-size: responsive calc(4 * var(--base))  calc(8 * var(--base));
-  font-weight: 300;
   color: var(--contrast-color);
   position: relative;
   text-align: center;
-  font-weight: 300;
   /*display: none;*/
 }
 

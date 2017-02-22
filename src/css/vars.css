@@ -1,12 +1,12 @@
 :root {
   --base: 8px;
-  --light-blue: blue;
+  --main-font-weight: 300;
   --main-color: #CD3438;
   --contrast-color: #FFFFFF;
 }
 
 @media (width <= 500px){
 :root{
-  --light-blue: red;
+  --main-font-weight: 400;
   }
 }

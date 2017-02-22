@@ -96,6 +96,7 @@ function init() {
             // camera.lookAt(new THREE.Vector3(0, 0, 350)); // In order to keep the same camera target during rotation
             scene.add(mesh);
             animate()
+            document.getElementById('loading-overlay').remove()
         }
     )
 
