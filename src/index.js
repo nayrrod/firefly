@@ -30,6 +30,7 @@ function init() {
 
     var pointLight = new THREE.PointLight(0x888888, 1.3, 300);
     pointLight.position.set(0, 100, 350);
+
     // scene.add(pointLight);
 
     // pointLight.castShadow = true;
@@ -45,11 +46,12 @@ function init() {
     //
 
 
-    pointLight3 = createLight('#ffffff');
-    pointLight3.position.z = 400;
-    pointLight3.position.y = 30;
-    pointLight3.position.x = 50;
-    scene.add(pointLight3);
+    pointLight3 = createLight('#ffffff')
+    pointLight3.position.z = 400
+    pointLight3.position.y = 30
+    pointLight3.position.x = 0
+    pointLight3.initialPosition = pointLight3.position.clone()
+    scene.add(pointLight3)
 
     // pointLight2.cameraVisisble = true
     // pointLight2.castShadow = true;
@@ -62,7 +64,7 @@ function init() {
 
     let loader = new THREE.JSONLoader()
     loader.load(
-        // resource URL
+        // Resource URL
         './assets/mountain-xlow.min.js',
         // Function when resource is loaded
         function (geometry, materials) {
@@ -86,7 +88,11 @@ function init() {
             // camera.up = new THREE.Vector3(0, 0, 1);
             // camera.lookAt(new THREE.Vector3(0, 0, 350)); // In order to keep the same camera target during rotation
             scene.add(mesh);
-            animate()
+            animate(),
+            // Function called on load progress
+            function(req) {
+              console.log(req)
+            }
         }
     )
 
@@ -126,11 +132,14 @@ function createLight( color ) {
 function animate() {
 
     requestAnimationFrame(animate)
-
-    // mesh.rotation.x += 0.01
-    mesh.rotation.x -= 0.003
-    let xOffset = Math.sin((clock.getElapsedTime() + clock.getDelta()))
-    pointLight3.position.x += xOffset
+    let delta = clock.getDelta()
+    mesh.rotation.x -= delta * 0.17
+    let xOffset = Math.sin(clock.getElapsedTime() % (2 * Math.PI))
+    // let yOffset = Math.sin(clock.getElapsedTime() * 20 % (2 * Math.PI))
+    pointLight3.position.x = pointLight3.initialPosition.x + xOffset * 50.0
+    // pointLight3.position.y = pointLight3.initialPosition.y + yOffset * 0.5
+    let rand = Math.random() * (1 - 0.5) + 0.5
+    pointLight3.scale.set(rand, rand, rand)
     // pointLight3.position.y += Math.sin(clock.getElapsedTime() + clock.getDelta() * 2)
 
     renderer.render(scene, camera)
