@@ -4404,6 +4404,12 @@ threejs-create@^1.0.0:
     orbit-controls "^1.1.1"
     three "^0.82.1"
 
+throttled-resize@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/throttled-resize/-/throttled-resize-1.0.1.tgz#1d8c0d8e26e97e53e09896f281769a1a98ef3c9f"
+  dependencies:
+    wolfy87-eventemitter "^4.2.11"
+
 through2@^0.6.3:
   version "0.6.5"
   resolved "https://registry.yarnpkg.com/through2/-/through2-0.6.5.tgz#41ab9c67b29d57209071410e1d7a7a968cd3ad48"
@@ -4727,6 +4733,10 @@ wide-align@^1.1.0:
 window-size@0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/window-size/-/window-size-0.1.0.tgz#5438cd2ea93b202efa3a19fe8887aee7c94f9c9d"
+
+wolfy87-eventemitter@^4.2.11:
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/wolfy87-eventemitter/-/wolfy87-eventemitter-4.3.0.tgz#6497396c95e74359f06b6e35409339318d8d964f"
 
 wordwrap@0.0.2:
   version "0.0.2"

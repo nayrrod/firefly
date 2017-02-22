@@ -1,6 +1,8 @@
 import css from './css/main.css'
 import * as THREE from 'three'
 import CreateLoop from 'raf-loop'
+import Resize from 'throttled-resize';
+
 let OrbitControls = require('three-orbit-controls')(THREE)
 
 let scene, camera, renderer, canvas, controls, clock
@@ -9,7 +11,8 @@ let geometry, material, mesh, pointLight3
 init()
 
 function init() {
-
+    let resize = new Resize()
+    resize.on('resize:end', handleResize)
     scene = new THREE.Scene()
     camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 1, 10000)
     // controls = new OrbitControls(camera)
@@ -62,6 +65,10 @@ function init() {
 
     scene.fog = new THREE.Fog(0xCD3438, 200, 400);
 
+    THREE.DefaultLoadingManager.onProgress = function (item, loaded, total) {
+        console.log(item, loaded, total);
+    };
+
     let loader = new THREE.JSONLoader()
     loader.load(
         // Resource URL
@@ -88,11 +95,7 @@ function init() {
             // camera.up = new THREE.Vector3(0, 0, 1);
             // camera.lookAt(new THREE.Vector3(0, 0, 350)); // In order to keep the same camera target during rotation
             scene.add(mesh);
-            animate(),
-            // Function called on load progress
-            function(req) {
-              console.log(req)
-            }
+            animate()
         }
     )
 
@@ -104,30 +107,38 @@ function init() {
     renderer.setSize(window.innerWidth, window.innerHeight)
     renderer.setPixelRatio(window.devicePixelRatio ? window.devicePixelRatio : 1)
     renderer.shadowMap.enabled = true;
-		renderer.shadowMap.type = THREE.BasicShadowMap;
-
-    // document.addEventListener('scroll', function(){
-    //   mesh.rotation.x+= 0.03;
-    // })
+    renderer.shadowMap.type = THREE.BasicShadowMap;
 }
 
-function createLight( color ) {
+function handleResize() {
+  camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 1, 10000)
+  camera.position.z = 500
+  camera.position.y = -50
+  camera.rotation.x = 45 * Math.PI / 180
+  renderer.setSize(window.innerWidth, window.innerHeight)
+  renderer.setPixelRatio(window.devicePixelRatio ? window.devicePixelRatio : 1)
+  console.log('resize fired')
+}
 
-    var pointLight = new THREE.PointLight( color, 1., 150 );
+function createLight(color) {
+
+    var pointLight = new THREE.PointLight(color, 1., 150);
     pointLight.castShadow = true;
     pointLight.shadow.camera.near = 1;
     pointLight.shadow.camera.far = 200;
     // pointLight.shadowCameraVisible = true;
     pointLight.shadow.bias = 0;
 
-    var geometry = new THREE.SphereGeometry( 0.5, 12, 6 );
-    var material = new THREE.MeshBasicMaterial( { color: color } );
-    var sphere = new THREE.Mesh( geometry, material );
-    pointLight.add( sphere );
+    var geometry = new THREE.SphereGeometry(0.5, 12, 6);
+    var material = new THREE.MeshBasicMaterial({
+        color: color
+    });
+    var sphere = new THREE.Mesh(geometry, material);
+    pointLight.add(sphere);
 
     return pointLight
 
-  }
+}
 
 function animate() {
 
