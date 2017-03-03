@@ -7,10 +7,12 @@ let OrbitControls = require('three-orbit-controls')(THREE)
 
 let scene, camera, renderer, canvas, controls, clock
 let geometry, material, mesh, pointLight3
+let WIDTH
 
 init()
 
 function init() {
+    WIDTH = window.innerWidth
     let resize = new Resize()
     resize.on('resize:end', handleResize)
     scene = new THREE.Scene()
@@ -91,6 +93,7 @@ function init() {
 
 function handleResize() {
     //On resize, only update the camera frustrum, position and renderer size
+    WIDTH = window.innerWidth
     camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 1, 10000)
     camera.position.z = 500
     camera.position.y = -50
@@ -127,7 +130,8 @@ function animate() {
     mesh.rotation.x -= delta * 0.17
     // Animate the firefly position along a sinusoid
     let xOffset = Math.sin(clock.getElapsedTime() % (2 * Math.PI))
-    pointLight3.position.x = pointLight3.initialPosition.x + xOffset * 50.0
+    xOffset = xOffset * (WIDTH / 33.6)
+    pointLight3.position.x = pointLight3.initialPosition.x + xOffset
     // Make the firefly size jitter
     let rand = Math.random() * (1 - 0.5) + 0.5
     pointLight3.scale.set(rand, rand, rand)
