@@ -15,39 +15,20 @@ function init() {
     resize.on('resize:end', handleResize)
     scene = new THREE.Scene()
     camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 1, 10000)
-    // controls = new OrbitControls(camera)
     camera.position.z = 500
     camera.position.y = -50
     camera.rotation.x = 45 * Math.PI / 180
 
-    // controls = new OrbitControls(camera)
-
     clock = new THREE.Clock()
 
-    var light = new THREE.AmbientLight('#CD3438') // soft white light
+    var light = new THREE.AmbientLight('#CD3438')
     scene.add(light)
 
     var directionalLight = new THREE.DirectionalLight(0x888888, 0.5)
     directionalLight.position.set(0, 1, 0).normalize()
-    //scene.add(directionalLight);
 
     var pointLight = new THREE.PointLight(0x888888, 1.3, 300);
     pointLight.position.set(0, 100, 350);
-
-    // scene.add(pointLight);
-
-    // pointLight.castShadow = true;
-    // pointLight.shadow.camera.near = 1;
-    // pointLight.shadow.camera.far = 500;
-    // pointLight.shadowCameraVisible = true;
-    // pointLight.shadow.bias = 0.01;
-
-    // var pointLight2 = new THREE.PointLight(0xFFFFFF, 1, 125);
-    // pointLight2.position.set(0, 0, 1000);
-    // scene.add(pointLight2);
-    //
-    //
-
 
     pointLight3 = createLight('#ffffff')
     pointLight3.position.z = 400
@@ -56,16 +37,13 @@ function init() {
     pointLight3.initialPosition = pointLight3.position.clone()
     scene.add(pointLight3)
 
-    // pointLight2.cameraVisisble = true
-    // pointLight2.castShadow = true;
-    // pointLight2.shadow.camera.near = 1;
-    // pointLight2.shadow.camera.far = 500;
-    // // pointLight2.shadowCameraVisible = true;
-    // pointLight2.shadow.bias = 0.01;
-
     scene.fog = new THREE.Fog(0xCD3438, 200, 400);
 
+
     THREE.DefaultLoadingManager.onProgress = function (item, loaded, total) {
+        // For some reason this callback is only called at the end
+        // Probably because of incompatibility with the model, which was created
+        // with and earlier version of three.js
         console.log(item, loaded, total);
     };
 
@@ -75,6 +53,7 @@ function init() {
         './assets/mountain-xlow.min.js',
         // Function when resource is loaded
         function (geometry, materials) {
+            // When model is loaded add it to the scene
             geometry.computeFlatVertexNormals();
             var wireframeMaterial = new THREE.MeshLambertMaterial({
                 color: '#ee4b39',
@@ -92,8 +71,7 @@ function init() {
 
             mesh.receiveShadow = true;
 
-            // camera.up = new THREE.Vector3(0, 0, 1);
-            // camera.lookAt(new THREE.Vector3(0, 0, 350)); // In order to keep the same camera target during rotation
+            // Launch the animation loop
             scene.add(mesh);
             animate()
             document.getElementById('loading-overlay').remove()
@@ -112,22 +90,22 @@ function init() {
 }
 
 function handleResize() {
-  camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 1, 10000)
-  camera.position.z = 500
-  camera.position.y = -50
-  camera.rotation.x = 45 * Math.PI / 180
-  renderer.setSize(window.innerWidth, window.innerHeight)
-  renderer.setPixelRatio(window.devicePixelRatio ? window.devicePixelRatio : 1)
-  console.log('resize fired')
+    //On resize, only update the camera frustrum, position and renderer size
+    camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 1, 10000)
+    camera.position.z = 500
+    camera.position.y = -50
+    camera.rotation.x = 45 * Math.PI / 180
+    renderer.setSize(window.innerWidth, window.innerHeight)
+    renderer.setPixelRatio(window.devicePixelRatio ? window.devicePixelRatio : 1)
+    // console.log('resize fired')
 }
 
-function createLight(color) {
 
+function createLight(color) {
     var pointLight = new THREE.PointLight(color, 1., 150);
     pointLight.castShadow = true;
     pointLight.shadow.camera.near = 1;
     pointLight.shadow.camera.far = 200;
-    // pointLight.shadowCameraVisible = true;
     pointLight.shadow.bias = 0;
 
     var geometry = new THREE.SphereGeometry(0.5, 12, 6);
@@ -144,15 +122,15 @@ function createLight(color) {
 function animate() {
 
     requestAnimationFrame(animate)
+    // Rotate the mountains model
     let delta = clock.getDelta()
     mesh.rotation.x -= delta * 0.17
+    // Animate the firefly position along a sinusoid
     let xOffset = Math.sin(clock.getElapsedTime() % (2 * Math.PI))
-    // let yOffset = Math.sin(clock.getElapsedTime() * 20 % (2 * Math.PI))
     pointLight3.position.x = pointLight3.initialPosition.x + xOffset * 50.0
-    // pointLight3.position.y = pointLight3.initialPosition.y + yOffset * 0.5
+    // Make the firefly size jitter
     let rand = Math.random() * (1 - 0.5) + 0.5
     pointLight3.scale.set(rand, rand, rand)
-    // pointLight3.position.y += Math.sin(clock.getElapsedTime() + clock.getDelta() * 2)
 
     renderer.render(scene, camera)
 
