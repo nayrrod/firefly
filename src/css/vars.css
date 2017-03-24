@@ -3,10 +3,12 @@
   --main-font-weight: 300;
   --main-color: #CD3438;
   --contrast-color: #FFFFFF;
+  --moon-width: 500px;
 }
 
 @media (width <= 500px){
 :root{
   --main-font-weight: 400;
+  --moon-width: 300px;
   }
 }

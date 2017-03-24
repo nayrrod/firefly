@@ -60,10 +60,10 @@ h1, h2, h3, h4, p {
   /*display: none;*/
 }
 
-.sun {
-  background-color: white;
-  width: 500px;
-  height: 500px;
+.moon {
+  background-color: var(--contrast-color);
+  width: var(--moon-width);
+  height: var(--moon-width);
   border-radius: 250px;
 }
 
@@ -72,7 +72,7 @@ h1, h2, h3, h4, p {
   z-index: -20;
 }
 
-.sun-panel{
+.moon-panel{
   align-items: flex-start;
   padding-top: 8px;
   height: calc(100vh - 8px);

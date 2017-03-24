@@ -1,16 +1,16 @@
 {
-  "name": "webpack-es6-postcss-boilerplate",
+  "name": "firefly",
   "version": "1.0.0",
-  "description": "A webpack boilerplate using Babel, and PostCss",
+  "description": "An experiment on storytelling using three.js",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --open",
+    "dev": "webpack-dev-server --open",
     "build": "webpack"
   },
   "keywords": [
-    "webpack",
-    "es6",
-    "postcss"
+    "webgl",
+    "three.js",
+    "experiment"
   ],
   "author": "Dorian Conq",
   "license": "MIT",
@@ -33,10 +33,8 @@
   },
   "dependencies": {
     "glslify": "^6.0.1",
-    "raf-loop": "^1.1.3",
     "three": "^0.84.0",
     "three-orbit-controls": "^82.1.0",
-    "threejs-create": "^1.0.0",
     "throttled-resize": "^1.0.1"
   }
 }
