@@ -1,5 +1,7 @@
 # Firefly
 
+## See it live [here](https://lab-firefly.netlify.com)
+
 ## Context
 
 This is an experiment on using three.js for a little (silly) storytelling. The original code was written when working with [Edouard Reinach](https://twitter.com/ereinach) for the homepage of Hypractif, which I slightly modified so it can stand on its own as a demo.
