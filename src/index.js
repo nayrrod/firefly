@@ -5,7 +5,7 @@ import Resize from 'throttled-resize'
 let OrbitControls = require('three-orbit-controls')(THREE)
 
 let scene, camera, renderer, canvas, controls, clock
-let geometry, material, mesh, pointLight3
+let geometry, material, mesh, firefly
 let WIDTH
 
 init()
@@ -20,6 +20,7 @@ function init() {
     camera.rotation.x = 45 * Math.PI / 180
     camera.position.y = -50
     camera.position.z = 500
+    camera.initialPosition = camera.position.clone()
 
     clock = new THREE.Clock()
 
@@ -34,12 +35,13 @@ function init() {
     let pointLight = new THREE.PointLight(0x888888, 1.3, 300)
     pointLight.position.set(0, 100, 350)
 
-    pointLight3 = createLight('#ffffff')
-    pointLight3.position.z = 400
-    pointLight3.position.y = 30
-    pointLight3.position.x = 0
-    pointLight3.initialPosition = pointLight3.position.clone()
-    scene.add(pointLight3)
+    // Create the firefly
+    firefly = createLight('#ffffff')
+    firefly.position.z = 400
+    firefly.position.y = 30
+    firefly.position.x = 0
+    firefly.initialPosition = firefly.position.clone()
+    scene.add(firefly)
 
     // Add some fog matching the DOM background color
     scene.fog = new THREE.Fog(0xCD3438, 200, 400)
@@ -133,10 +135,10 @@ function animate() {
     let xOffset = Math.sin(clock.getElapsedTime() % (2 * Math.PI))
     // Interpolate the offset using window width
     xOffset = xOffset * (WIDTH / 33.6)
-    pointLight3.position.x = pointLight3.initialPosition.x + xOffset
+    firefly.position.x = firefly.initialPosition.x + xOffset
     // Make the firefly size jitter, to simulate flickering
     let rand = Math.random() * (1 - 0.5) + 0.5
-    pointLight3.scale.set(rand, rand, rand)
+    firefly.scale.set(rand, rand, rand)
 
     renderer.render(scene, camera)
 
